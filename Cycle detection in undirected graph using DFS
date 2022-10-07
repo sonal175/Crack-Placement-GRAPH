@@ -1,0 +1,26 @@
+// Cycle detection in undirected graph using DFS
+ 
+   // TC- O(N+E) SC-O(N+E)+O(N)+O(N) where N are number of nodes and E are edges
+   
+    // Code--
+    
+    bool checkcycle(int node, int parent, vector<int>&vis,vector<int> adj[]){
+     vis[node]=1;
+     for(auto it:adj[node]){
+         if(vis[it]==0){
+             if(checkcycle(it,node,vis,adj)) return true;
+         }else if(it!=parent) return true;
+     }
+     return false;
+   }
+   bool iscycle(int v, vector<int>adj[]){
+    vector<int>vis(v+1,0);
+    for(int i=1;i<=v;i++){
+        if(!vis[i]){
+            if(checkcycle(i,-1,vis,adj)) return true;
+        }
+    }
+    return false;
+  }
+     
+      
