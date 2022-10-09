@@ -1,0 +1,44 @@
+// Shortest path in directed acyclic graph
+
+// TC-O(N+E)*2 (because of using topological sort) SC-O(2N) where n are nodes and e are edges
+
+// Code--
+
+
+
+void findtopo(int node,int vis[],stack<int>&st,vector<pair<int,int>>adj[]){
+    vis[node]=1;
+    for(auto it:adj[node]){
+        if(!vis[it.first]){
+            findtopo(it.first,vis,st,adj);
+        }
+    }
+    st.push(node);
+}
+vector<int>shortest(int src,int n, vector<pair<int,int>>adj[]){
+    int vis[n]={0};
+    stack<int>st;
+    for(int i=0;i<n;i++){
+        if(!vis[i]){
+            findtopo(i,vis,st,adj);
+        }
+    }
+    vector<int>dis(n);
+    for(int i=0;i<n;i++){
+        dis[i]=1e9;
+    }
+    dis[src]=0;
+    
+    while(!st.empty()){
+        int node=st.top();
+        st.pop();
+        if(dis[node]!=1e9){
+            for(auto it:adj[node]){
+                if(dis[node]+it.second<dis[it.first]){
+                    dis[it.first]=dis[node]+it.second;
+                }
+            }
+        }
+    }
+    return dis;
+}
